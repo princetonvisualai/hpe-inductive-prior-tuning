@@ -1,0 +1,17 @@
+device: 'gpu'
+gpu_num: '0'
+num_parts: 18
+img_size: 256
+batch_size: 48
+learning_rate: 0.001
+regressor_nf: [32, 64, 128, 256, 512, 512, 512]
+translator_nf: [32, 64, 128, 256]
+anchor_loss_weight: 0.5
+boundary_loss_weight: 1
+num_epochs: 50
+num_workers: 8
+template_path: 'template.json'
+anchor_pts_path: 'anchor_points.json'
+frames_path: 'data/preprocessed/training'
+log_dir: 'vol/logs_mse_flipaugment_twostepwarp/'
+checkpoint_dir: 'vol/checkpoints_mse_flipaugment_twostepwarp/'

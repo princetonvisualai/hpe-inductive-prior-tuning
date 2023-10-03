@@ -1,0 +1,19 @@
+device: 'gpu'
+gpu_num: '0'
+num_parts: 18
+img_size: 256
+batch_size: 48
+learning_rate: 0.001
+regressor_nf: [32, 64, 128, 256, 512, 512, 512]
+translator_nf: [32, 64, 128, 256]
+anchor_loss_weight: 0.5
+boundary_loss_weight: 1
+supervision_loss_weight: 0.01
+num_epochs: 50
+num_workers: 8
+template_path: 'template_naturalg1.json'
+anchor_pts_path: 'anchor_points_naturalg1.json'
+frames_path: 'data/preprocessed/training'
+log_dir: 'vol/logs_mse_naturalg1_flipaugment_twostepwarp_orient_supervisioninteractiveteacher_2/'
+checkpoint_dir: 'vol/checkpoints_mse_naturalg1_flipaugment_twostepwarp_orient_supervisioninteractiveteacher_2/'
+supervision_idxs: [59699, 51556, 64262, 24141, 88462, 34109, 7728, 56641]
