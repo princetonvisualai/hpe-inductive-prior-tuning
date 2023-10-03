@@ -1,0 +1,1 @@
+python train_mse_dists_flipaugment_twostepwarp.py -config configs/mse_dists_naturalg1_flipaugment_twostepwarp.yaml

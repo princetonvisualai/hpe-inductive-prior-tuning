@@ -1,0 +1,1 @@
+python train_mse.py -config configs/mse_naturalg1.yaml
