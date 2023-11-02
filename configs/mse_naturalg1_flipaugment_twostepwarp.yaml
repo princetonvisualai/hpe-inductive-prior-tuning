@@ -10,8 +10,8 @@ anchor_loss_weight: 0.5
 boundary_loss_weight: 1
 num_epochs: 50
 num_workers: 8
-template_path: 'template_naturalg1.json'
-anchor_pts_path: 'anchor_points_naturalg1.json'
+template_path: 'template_natural.json'
+anchor_pts_path: 'anchor_points_natural.json'
 frames_path: 'data/preprocessed/training'
-log_dir: 'vol/logs_mse_naturalg1_flipaugment_twostepwarp/'
-checkpoint_dir: 'vol/checkpoints_mse_naturalg1_flipaugment_twostepwarp/'
+log_dir: 'vol/logs_mse_natural_flipaugment_twostepwarp/'
+checkpoint_dir: 'vol/checkpoints_mse_natural_flipaugment_twostepwarp/'
