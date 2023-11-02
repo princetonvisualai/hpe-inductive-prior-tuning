@@ -1,0 +1,1 @@
+python train_baseline.py -config configs/natural.yaml

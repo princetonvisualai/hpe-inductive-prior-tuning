@@ -1,1 +1,0 @@
-python train_mse_flipaugment.py -config configs/mse_naturalg1_flipaugment.yaml
