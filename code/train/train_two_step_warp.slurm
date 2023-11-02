@@ -1,1 +1,0 @@
-python train_two_step_warp.py -config configs/two_step_warp.yaml

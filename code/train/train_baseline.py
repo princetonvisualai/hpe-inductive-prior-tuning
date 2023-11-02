@@ -1,12 +1,15 @@
+import sys
+sys.path.insert(0,"../..")
+
 import os
 import torch
 from argparse import ArgumentParser
 import torchvision.transforms as transforms
 from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader
-from src.core.utils.helper import load_config, show_images
-from src.core.model_baseline import Model
-from src.core.utils.dataset_smaller import ImageDataset
+from code.utils.helper import load_config, show_images
+from code.models.model_baseline import Model
+from code.dataset.dataset_smaller import ImageDataset
 
 parser = ArgumentParser()
 
@@ -36,9 +39,6 @@ inverse2 = transforms.Normalize(mean=[-0.485, -0.456, -0.406],
                                  std=[1, 1, 1])
 
 inverse = transforms.Compose([inverse2, inverse1])
-
-#totensor = transforms.ToTensor()
-#transform = transforms.Compose([totensor, normalize])
 
 # define dataset and dataloader
 dataset = ImageDataset(transform=normalize)

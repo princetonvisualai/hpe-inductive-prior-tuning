@@ -1,12 +1,15 @@
+import sys
+sys.path.insert(0,"../..")
+
 import os
 import torch
 from argparse import ArgumentParser
 import torchvision.transforms as transforms
 from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader
-from src.core.utils.helper import load_config, show_images
-from src.core.model_mse import Model
-from src.core.utils.dataset_smaller import ImageDataset
+from code.utils.helper import load_config, show_images
+from code.models.model_mse import Model
+from code.dataset.dataset_smaller import ImageDataset
 
 parser = ArgumentParser()
 

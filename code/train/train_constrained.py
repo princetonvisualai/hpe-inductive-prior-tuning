@@ -1,12 +1,15 @@
+import sys
+sys.path.insert(0,"../..")
+
 import os
 import torch
 from argparse import ArgumentParser
 import torchvision.transforms as transforms
 from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader
-from src.core.utils.helper import load_config, show_images
-from src.core.model_broadly_shared import Model
-from src.core.utils.dataset_evensmaller_flipaugment import ImageDataset
+from code.utils.helper import load_config, show_images
+from code.models.model_constrained import Model
+from code.dataset.dataset_evensmaller_flipaugment import ImageDataset
 
 parser = ArgumentParser()
 
@@ -77,7 +80,7 @@ for epoch in range(0, num_epochs):
                     else:
                         grid = show_images(v, renorm=inverse)
                     writer.add_image(k, grid, global_step=i)
-        # print(i)
+                    
         i += 1
         return_imgs = False
     # save checkpoint

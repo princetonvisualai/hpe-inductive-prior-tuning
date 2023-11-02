@@ -1,1 +1,0 @@
-python train_broadly_shared.py -config configs/broadly_shared.yaml
