@@ -10,8 +10,8 @@ anchor_loss_weight: 0.4
 boundary_loss_weight: 1
 num_epochs: 50
 num_workers: 8
-template_path: 'template_new.json'
-anchor_pts_path: 'anchor_points_new.json'
-frames_path: 'data/preprocessed/training'
-log_dir: 'vol/logs_two_step_warp_new_aug/'
-checkpoint_dir: 'vol/checkpoints_two_step_warp_new_aug/'
+template_path: '../../templates/template_new.json'
+anchor_pts_path: '../../templates/anchor_points_new.json'
+frames_path: '../../data/preprocessed/training'
+log_dir: '../../vol/logs_two_step_warp/'
+checkpoint_dir: '../../vol/checkpoints_two_step_warp/'

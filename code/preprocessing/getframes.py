@@ -1,16 +1,7 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 compute_data_folder = "../../data/"
 
-# In[2]:
-
-import numpy as np
 import os
-import h5py
 import cv2
-
-# In[3]:
 
 # get list of all subjects
 def get_subjects():
@@ -21,8 +12,6 @@ def get_video_paths(subject):
     video_paths = os.listdir(compute_data_folder + subject + "/videos/")[2:]
     return video_paths
 
-# In[4]:
-
 subjects = get_subjects()
 
 # for each subject
@@ -30,7 +19,7 @@ for subject in subjects:
     video_paths = get_video_paths(subject)
     path_prefix = compute_data_folder + subject
     
-    save_prefix = compute_data_folder + "h36m_final/training/" + subject + "/frames/"
+    save_prefix = compute_data_folder + "h36m/training/" + subject + "/frames/"
     
     f = open("getframeslog.txt", "a")
     f.write("Processing subject " + subject + "\n")
@@ -61,4 +50,3 @@ for subject in subjects:
                 break
             cv2.imwrite(save_prefix_vid + ("frame%04d.png" % i), image)     # save frame as JPEG file
             i += 1
-

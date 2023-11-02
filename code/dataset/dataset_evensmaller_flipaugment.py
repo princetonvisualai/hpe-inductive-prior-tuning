@@ -39,7 +39,8 @@ class ImageDataset(Dataset):
                         self.len += (length // 2)
                 
         print("Length of Dataset: ", self.len * 2)
-        self.prefix = "/scratch/network/nobliney/project/"
+
+        self.prefix = "/scratch/network/nobliney/project/" ###
         print("Finished initializing dataset.")
 
                 

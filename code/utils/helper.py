@@ -1,15 +1,14 @@
+# Imports
 import yaml
 import torch
 import json_tricks as json
 from torchvision.utils import make_grid
-
 
 def load_config(path):
     with open(path, 'r') as file:
         cfg = yaml.load(file)
 
     return cfg
-
 
 def draw_shape(pos, sigma_x, sigma_y, angle, size):
     """

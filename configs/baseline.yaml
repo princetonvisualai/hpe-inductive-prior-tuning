@@ -10,8 +10,8 @@ anchor_loss_weight: 0.5
 boundary_loss_weight: 1
 num_epochs: 50
 num_workers: 8
-template_path: 'template.json'
-anchor_pts_path: 'anchor_points.json'
-frames_path: 'data/preprocessed/training'
-log_dir: 'vol/logs_baseline/'
-checkpoint_dir: 'vol/checkpoints_baseline/'
+template_path: '../../templates/template.json'
+anchor_pts_path: '../../anchor_points.json'
+frames_path: '../../data/preprocessed/training'
+log_dir: '../../vol/logs_baseline/'
+checkpoint_dir: '../../vol/checkpoints_baseline/'
