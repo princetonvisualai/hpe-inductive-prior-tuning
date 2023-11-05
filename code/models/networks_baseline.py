@@ -1,7 +1,6 @@
 import torch.nn as nn
 import torch
 
-
 class ParameterRegressor(nn.Module):
     def __init__(self, num_features, num_parts, use_orient = False):
         super(ParameterRegressor, self).__init__()

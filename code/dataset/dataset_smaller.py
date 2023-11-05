@@ -1,8 +1,7 @@
-from torch.utils.data import Dataset
 import os
-from torchvision.io import read_image
 import numpy as np
-
+from torch.utils.data import Dataset
+from torchvision.io import read_image
 
 class ImageDataset(Dataset):
     """Implement your map-style dataset class here!"""
@@ -14,7 +13,7 @@ class ImageDataset(Dataset):
         self.frame_paths = []
         
         for subject in subjects:
-            subject_prefix = "data/preprocessed/training/" + subject + "/"
+            subject_prefix = "../../data/preprocessed/training/" + subject + "/"
             folders = os.listdir(subject_prefix)
             for folder in folders:
                 if not folder.startswith("."):
@@ -34,7 +33,7 @@ class ImageDataset(Dataset):
         
         self.len = len(self.frame_paths) // 2
         print("Length of Dataset: ", self.len)
-        self.prefix = "/scratch/network/nobliney/project/"
+        self.prefix = "../../"
         print("Finished initializing dataset.")
 
                 

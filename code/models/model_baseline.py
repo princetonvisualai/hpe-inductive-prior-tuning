@@ -1,15 +1,23 @@
+import sys
+sys.path.insert(0,"../..")
+
 import torch
 import torch.nn as nn
 from torch.optim import Adam
 import torchvision.models as models
-from src.core.networks_baseline import ParameterRegressor, Reconstructor
-from src.core.utils.losses import compute_anchor_loss, compute_boundary_loss, _l1_loss
-from src.core.utils.helper import draw_template, load_anchor_points
-from src.core.utils.transforms import transform_template, transform_anchor_points
+from networks_baseline import ParameterRegressor, Reconstructor
+from code.utils.losses import compute_anchor_loss, compute_boundary_loss, _l1_loss
+from code.utils.helper import draw_template, load_anchor_points
+from code.utils.transforms import transform_template, transform_anchor_points
 
 
 class Model:
     def __init__(self, cfg, device):
+
+        """
+        TO DO: fill in path to pretrained VGG
+        """
+        self.PATH_TO_PRETRAINED_VGG = "" # TO DO
 
         self.template = draw_template(cfg['template_path'], size=cfg['img_size'], batch_size=cfg['batch_size'],
                                       device=device)
@@ -23,7 +31,7 @@ class Model:
         self.vgg = nn.Sequential()
         # since compute node has no internet, use pre-downloaded vgg model
         vgg = models.vgg19(pretrained=False)
-        vgg.load_state_dict(torch.load("/scratch/network/nobliney/project/src/core/vgg_model_pretrained_19"))
+        vgg.load_state_dict(torch.load(self.PATH_TO_PRETRAINED_VGG))
         vgg = vgg.features.eval().to(device)
         #vgg = models.vgg19(pretrained=True).features.eval().to(device)
         

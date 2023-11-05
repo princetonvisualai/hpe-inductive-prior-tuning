@@ -1,4 +1,8 @@
 """
+Step 4: Collect frames
+"""
+
+"""
 script for processing raw H36m images. The folder structure for the extracted frames should be:
 h36m
     +-- training

@@ -1,3 +1,7 @@
+"""
+Step 2: Create data_dict.json
+"""
+
 import os
 import numpy as np
 import h5py
@@ -39,7 +43,7 @@ for subject in subjects:
     bbox_paths = [(i[:-4] + ".mat") for i in video_paths]
 
     bbox_prefix = compute_data_folder + subject + "/bboxes/"
-    frame_prefix = "../../data/" + "h36m/training/" + subject + "/frames/"
+    frame_prefix = compute_data_folder + "h36m/training/" + subject + "/frames/"
     
     f = open("create_data_dict_log.txt", "a")
     f.write("Processing subject " + subject + "\n")

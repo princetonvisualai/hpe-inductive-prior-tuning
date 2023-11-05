@@ -1,7 +1,11 @@
-compute_data_folder = "../../data/"
+"""
+Step 1: Extract frames from video
+"""
 
 import os
 import cv2
+
+compute_data_folder = "../../data/"
 
 # get list of all subjects
 def get_subjects():

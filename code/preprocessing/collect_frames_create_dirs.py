@@ -1,3 +1,7 @@
+"""
+Step 3: Create directories for collecting frames
+"""
+
 dst = "../../data/preprocessed/training"
 subjects = ["S1", "S11", "S5", "S6", "S7", "S8", "S9"]
 meta = "data_dict.json"
