@@ -1,7 +1,7 @@
 # Efficient, Self-Supervised Human Pose Estimation with Inductive Prior Tuning
 [Paper](https://openaccess.thecvf.com/content/ICCV2023W/ROAD++/papers/Yoo_Efficient_Self-Supervised_Human_Pose_Estimation_with_Inductive_Prior_Tuning_ICCVW_2023_paper.pdf)
 
-![](sample/1.png)
+<img src="sample/1.png" width="60%">
 
 ## Set up
 
@@ -32,6 +32,7 @@ python collect_frames.py
 ## Train
 
 Change directory to code/train.
+
 `
 cd code/train
 `
