@@ -1,4 +1,7 @@
 # Efficient, Self-Supervised Human Pose Estimation with Inductive Prior Tuning
+![Paper](https://openaccess.thecvf.com/content/ICCV2023W/ROAD++/papers/Yoo_Efficient_Self-Supervised_Human_Pose_Estimation_with_Inductive_Prior_Tuning_ICCVW_2023_paper.pdf)
+
+![](sample/1.png)
 
 ## Set up
 
@@ -13,35 +16,54 @@ pip install -r requirements.txt
 ```
 
 ## Dataset access
-Ask authors of Human3.6M dataset for access permission.
+
+Request authors of Human3.6M dataset for access to dataset.
 
 ## Data preprocessing
+
 ```
-cd code/processing
-python preprocessing_create_dirs.py
-python h36m_processing.py
+cd code/preprocessing
+python get_frames.py
+python create_data_dict.py
+python collect_frames_create_dirs.py
+python collect_frames.py
 ```
 
 ## Train
 
-`python train_baseline.py -config configs/baseline.yaml`
+Change directory to code/train.
+`
+cd code/train
+`
 
-`python train_constrained.py -config configs/constrained.yaml`
+`python train_baseline.py -config ../../configs/baseline.yaml`
 
-`python train_mse_flipaugment_twostepwarp.py -config configs/mse_flipaugment_twostepwarp.yaml`
+`python train_constrained.py -config ../../configs/constrained.yaml`
 
-`python train_mse_flipaugment.py -config configs/mse_flipaugment.yaml`
+`python train_mse_flipaugment_twostepwarp.py -config ../../configs/mse_flipaugment_twostepwarp.yaml`
+`python train_mse_flipaugment_twostepwarp.py -config ../../configs/mse_natural_flipaugment_twostepwarp.yaml`
 
-`python train_mse_flipaugment_twostepwarp.py -config configs/mse_natural_flipaugment_twostepwarp.yaml`
+`python train_mse_flipaugment.py -config ../../configs/mse_flipaugment.yaml`
+`python train_mse_flipaugment.py -config ../../configs/mse_natural_flipaugment.yaml`
 
-`python train_mse_flipaugment.py -config configs/mse_natural_flipaugment.yaml`
+`python train_mse_twostepwarp.py -config ../../configs/mse_twostepwarp.yaml`
 
-`python train_mse_twostepwarp.py -config configs/mse_twostepwarp.yaml`
+`python train_mse.py -config ../../configs/mse_natural.yaml`
+`python train_mse.py -config ../../configs/mse.yaml`
 
-`python train_mse.py -config configs/mse_natural.yaml`
+`python train_baseline.py -config ../../configs/natural.yaml`
 
-`python train_mse.py -config configs/mse.yaml`
+`python train_two_step_warp.py -config ../../configs/two_step_warp.yaml`
 
-`python train_baseline.py -config configs/natural.yaml`
+## Citation
 
-`python train_two_step_warp.py -config configs/two_step_warp.yaml`
+```
+@InProceedings{Yoo_2023_ICCV,
+    author    = {Yoo, Nobline and Russakovsky, Olga},
+    title     = {Efficient, Self-Supervised Human Pose Estimation with Inductive Prior Tuning},
+    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) Workshops},
+    month     = {October},
+    year      = {2023},
+    pages     = {3271-3280}
+}
+```
