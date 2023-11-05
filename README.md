@@ -19,6 +19,20 @@ pip install -r requirements.txt
 
 Request authors of Human3.6M dataset for access to dataset.
 
+Once access is granted, the data should be structures as follows in the `data/` folder.
+
+```
+data
+    -- S1
+        -- videos
+            --mp4 files
+    -- S5
+        -- videos
+    -- S6
+        -- videos
+    ...
+```
+
 ## Data preprocessing
 
 ```
