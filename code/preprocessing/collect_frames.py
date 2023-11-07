@@ -1,5 +1,6 @@
 """
 Step 4: Collect frames
+    - Creates mapping_preprocessed.json
 """
 
 """
