@@ -41,15 +41,12 @@ python get_frames.py
 python create_data_dict.py
 python collect_frames_create_dirs.py
 python collect_frames.py
+python create_preprocessed_to_orig_mapping.py
 ```
 
 ## Train
 
-Change directory to code/train.
-
-`
-cd code/train
-`
+Change directory to code/train: `cd code/train`
 
 `python train_baseline.py -config ../../configs/baseline.yaml`
 
