@@ -3,7 +3,7 @@
 
 <img src="sample/1.png" width="60%">
 
-Built on [codebase](https://github.com/lschmidtke/shape_templates) for Schmidtke et al. "Unsupervised Human Pose Estimation through Transforming Shape Templates."
+Builds on [codebase](https://github.com/lschmidtke/shape_templates) for Schmidtke et al. "Unsupervised Human Pose Estimation through Transforming Shape Templates."
 
 ## Set up
 
