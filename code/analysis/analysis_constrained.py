@@ -82,13 +82,10 @@ write_output("Done with initializing models.")
 ##############################################################################################################
 
 # 1. Quantitative Analysis
-## 1.1 Overall Accuracy
 
 get_midpoint = True
 
-#pose_collection = torch.zeros(DATASET_LENGTH, NUM_JOINTS, 2, device=device)
 dist1_collection = torch.zeros(DATASET_LENGTH, NUM_JOINTS, device=device)
-#diagonal_collection = torch.zeros(DATASET_LENGTH, device=device)
 
 for i in range(DATASET_LENGTH):
 
@@ -105,11 +102,9 @@ for i in range(DATASET_LENGTH):
     # Scale down ground truth pose
     bbox1, pose1 = get_pose(bbox1, pose1)
 
-    #bbox1 = torch.tensor(bbox1, device=device)
     pose1 = torch.tensor(pose1, device=device)
     
     ######## COLLECT POSE
-    #pose_collection[i] = pose1
     
     # Get predicted pose
     anchors1 = predict_joints(predictor1, frame1, frame2, get_midpoint = get_midpoint)
@@ -117,15 +112,10 @@ for i in range(DATASET_LENGTH):
     anchors1 = torch.tensor(anchors1, device=device)
     
     # PDJ@0.05 = Distance between predicted and true joint < 0.05 * bbox diagonal
-
-    #diagonal = dist(bbox1[0], bbox1[1])
     
     ######## COLLECT DIAGONAL, ERROR FROM GROUND TRUTH
     dist1_collection[i] = dist(pose1, anchors1)
 
 DISTS_DIR = variables.DISTS_DIR
-
-#torch.save(pose_collection, "pose_collection.pt") # NEED TO DO JUST ONCE
-#torch.save(diagonal_collection, "diagonal_collection.pt") # NEED TO DO JUST ONCE
 
 torch.save(dist1_collection, DISTS_DIR + POSTFIX1 + ".pt")

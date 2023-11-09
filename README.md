@@ -7,7 +7,11 @@
 
 1. In `configs/variables.py`, fill out `TO DO` elements.
 
-2. Run the following commands.
+2. Download Human3.6m dataset. See `Dataset access` section for details.
+
+3. In `code/preprocessing/create_data_dict.py` and `code/preprocessing/get_frames.py` update the indexing to match the file structure of the downloaded video files (see TO DO instructions in file for detail).
+
+4. Set up environment:
 
 ```
 conda create -n poseestimation python=3.7
@@ -37,6 +41,8 @@ data
 
 ## Data preprocessing
 
+Once the data has been downloaded and programming environment is set up, preprocess the data.
+
 ```
 cd code/preprocessing
 python get_frames.py
@@ -48,26 +54,21 @@ python create_preprocessed_to_orig_mapping.py
 
 ## Train
 
-Change directory to code/train: `cd code/train`
+First, change directory to `code/train`: `cd code/train`
 
-`python train_baseline.py -config ../../configs/baseline.yaml`
+Baseline: `python train_baseline.py -config ../../configs/baseline.yaml`
 
-`python train_constrained.py -config ../../configs/constrained.yaml`
++ MSE: `python train_mse.py -config ../../configs/mse.yaml`
 
-`python train_mse_flipaugment_twostepwarp.py -config ../../configs/mse_flipaugment_twostepwarp.yaml`
-`python train_mse_flipaugment_twostepwarp.py -config ../../configs/mse_natural_flipaugment_twostepwarp.yaml`
+New template: `python train_baseline.py -config ../../configs/natural.yaml`
 
-`python train_mse_flipaugment.py -config ../../configs/mse_flipaugment.yaml`
-`python train_mse_flipaugment.py -config ../../configs/mse_natural_flipaugment.yaml`
++ MSE, new template: `python train_mse.py -config ../../configs/mse_natural.yaml`
 
-`python train_mse_twostepwarp.py -config ../../configs/mse_twostepwarp.yaml`
++ MSE, new template, flip augment: `python train_mse_flipaugment.py -config ../../configs/mse_natural_flipaugment.yaml`
 
-`python train_mse.py -config ../../configs/mse_natural.yaml`
-`python train_mse.py -config ../../configs/mse.yaml`
++ MSE, new template, flip augment, coarse-to-fine: `python train_mse_flipaugment_twostepwarp.py -config ../../configs/mse_natural_flipaugment_twostepwarp.yaml`
 
-`python train_baseline.py -config ../../configs/natural.yaml`
-
-`python train_two_step_warp.py -config ../../configs/two_step_warp.yaml`
+Constrained: `python train_constrained.py -config ../../configs/constrained.yaml`
 
 ## Citation
 
