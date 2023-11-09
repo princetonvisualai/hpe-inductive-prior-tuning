@@ -1,1 +1,3 @@
 .DS_Store
+vol/checkpoints_mse_natural_flipaugment_twostepwarp/.gitattributes
+*/.ipynb_checkpoints
