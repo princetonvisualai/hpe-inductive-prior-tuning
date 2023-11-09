@@ -27,7 +27,7 @@ data_dict.json:
     {"S1": 
         {"Eating.60457274": 
             [
-                {"frame": "/data2/h36m/training/S5/frames/Eating.60457274/frame0001.png", 
+                {"frame": "/data/h36m/training/S5/frames/Eating.60457274/frame0001.png", 
                 "bounding_box": {"__ndarray__": [[345, 161], [820, 680]], "dtype": "int64", "shape": [2, 2], "Corder": true}}
             ]
         }
@@ -36,13 +36,21 @@ data_dict.json:
 if unclear, have a look at the data_dict.json file in the processing folder
 """
 
-dst = "../../data/preprocessed/training"
+import sys
+sys.path.append("..")
+sys.path.append("../..")
+
+import configs.variables as variables
+
+DATA_DIR = variables.DATA_DIR
+
+dst = DATA_DIR + "preprocessed/training"
 subjects = ["S1", "S11", "S5", "S6", "S7", "S8", "S9"]
 meta = "data_dict.json"
 
+import os
 import cv2
 import json_tricks as json
-import os
 import numpy as np
 from transforms import get_affine_transform
 import random

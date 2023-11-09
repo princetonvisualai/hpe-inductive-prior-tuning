@@ -1,5 +1,9 @@
+import sys
+sys.path.append("..")
+sys.path.append("../..")
+
 ################################################ Imports
-OUTPUT_FILE = "analysis_best3040.txt"
+OUTPUT_FILE = "analysis.txt"
 
 def write_output(msg, mode = "a"):
     with open("progress/" + OUTPUT_FILE, "a") as f:
@@ -7,25 +11,16 @@ def write_output(msg, mode = "a"):
     
 write_output("", "w") # clear output file
 
-write_output("Beginning updating sys path")
-
-import sys
-sys.path.append("..")
-sys.path.append("../..")
-sys.path.append("../../..")
-sys.path.append("helper")
-
-write_output("Finished updating sys path")
-
 import torch
-import matplotlib.pyplot as plt
 import torchvision.transforms as T
+import matplotlib.pyplot as plt
 import json_tricks as json
 
 from utils.helper import load_config
 from dataset_test import TestImageDataset
+import configs.variables as variables
 
-from helper.predict import (adjust_configs, most_recent_checkpoint, load_checkpoint, get_pose, predict_joints, sort_checkpoints)
+from helper.predict import (adjust_configs, most_recent_checkpoint, load_checkpoint, get_pose, predict_joints)
 
 from helper.deepdive import (dist)
 
@@ -35,10 +30,13 @@ device = torch.device('cuda:0')
 ################################################ Constants
 NUM_JOINTS = 15
 
-PREFIX = "../../"
-PREFIX_VOL = PREFIX + "vol/"
-PREPROCESSED_TO_ORIG = PREFIX + "code/preprocessing/preprocessed_to_orig.json" # contains the file path of original frame as well
-CHECKPOINTS_PREFIX = PREFIX_VOL + "checkpoints_"
+VOL_DIR = variables.VOL_DIR
+CONFIGS_DIR = variables.CONFIGS_DIR
+CODE_DIR = variables.CODE_DIR
+
+PREPROCESSED_TO_ORIG = variables.PREPROCESSED_TO_ORIG # contains the file path of original frame as well
+
+CHECKPOINTS_PREFIX = VOL_DIR + "checkpoints_"
 TEST_SUBJECTS = ['S9', 'S11']
 NORMALIZE = T.Normalize(mean=[0.485, 0.456, 0.406],
                         std=[0.229, 0.224, 0.225])
@@ -72,8 +70,8 @@ CHECKPOINTS_FOLDER2 = CHECKPOINTS_PREFIX + POSTFIX2 + "/"
 ################################################
 
 # Get configurations of both models
-config1 = load_config("../../../configs/" + CONFIG1_YAML)
-config2 = load_config("../../../configs/" + CONFIG2_YAML)
+config1 = load_config(CONFIGS_DIR + CONFIG1_YAML)
+config2 = load_config(CONFIGS_DIR + CONFIG2_YAML)
 # train --> test configurations
 adjust_configs(config1)
 adjust_configs(config2)
@@ -88,15 +86,8 @@ predictor2.regressor = predictor2.regressor.eval()
 predictor2.translator = predictor2.translator.eval()
 
 # Load checkpoint
-INDEX1 = 10
-INDEX2 = 20
-checkpoint1 = sort_checkpoints(CHECKPOINTS_FOLDER1)[INDEX1 - 1]
-checkpoint2 = sort_checkpoints(CHECKPOINTS_FOLDER2)[INDEX2 - 1]
-
-"""
 checkpoint1 = most_recent_checkpoint(CHECKPOINTS_FOLDER1)
 checkpoint2 = most_recent_checkpoint(CHECKPOINTS_FOLDER2)
-"""
 
 load_checkpoint(predictor1, CHECKPOINTS_FOLDER1 + checkpoint1)
 load_checkpoint(predictor2, CHECKPOINTS_FOLDER2 + checkpoint2)
@@ -110,10 +101,8 @@ write_output("Done with initializing models.")
 
 get_midpoint = True
 
-#pose_collection = torch.zeros(DATASET_LENGTH, NUM_JOINTS, 2, device=device)
 dist1_collection = torch.zeros(DATASET_LENGTH, NUM_JOINTS, device=device)
 dist2_collection = torch.zeros(DATASET_LENGTH, NUM_JOINTS, device=device)
-#diagonal_collection = torch.zeros(DATASET_LENGTH, device=device)
 
 for i in range(DATASET_LENGTH):
 
@@ -130,11 +119,9 @@ for i in range(DATASET_LENGTH):
     # Scale down ground truth pose
     bbox1, pose1 = get_pose(bbox1, pose1)
 
-    #bbox1 = torch.tensor(bbox1, device=device)
     pose1 = torch.tensor(pose1, device=device)
     
     ######## COLLECT POSE
-    #pose_collection[i] = pose1
     
     # Get predicted pose
     anchors1 = predict_joints(predictor1, frame1, frame2, get_midpoint = get_midpoint)
@@ -144,18 +131,12 @@ for i in range(DATASET_LENGTH):
     anchors2 = torch.tensor(anchors2, device=device)
     
     # PDJ@0.05 = Distance between predicted and true joint < 0.05 * bbox diagonal
-
-    #diagonal = dist(bbox1[0], bbox1[1])
     
     ######## COLLECT DIAGONAL, ERROR FROM GROUND TRUTH
     dist1_collection[i] = dist(pose1, anchors1)
     dist2_collection[i] = dist(pose1, anchors2)
-    #diagonal_collection[i] = diagonal
 
-DISTS_DIR = "dists/"
+DISTS_DIR = variables.DISTS_DIR
 
-#torch.save(pose_collection, "pose_collection.pt") # NEED TO DO JUST ONCE
-#torch.save(diagonal_collection, "diagonal_collection.pt") # NEED TO DO JUST ONCE
-
-torch.save(dist1_collection, DISTS_DIR + POSTFIX1 + str(INDEX1) + ".pt")
-torch.save(dist2_collection, DISTS_DIR + POSTFIX2 + str(INDEX2) + ".pt")
+torch.save(dist1_collection, DISTS_DIR + POSTFIX1 + ".pt")
+torch.save(dist2_collection, DISTS_DIR + POSTFIX2 + ".pt")

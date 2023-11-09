@@ -5,19 +5,19 @@ sys.path.append("../../..")
 
 import numpy as np
 import torch
-import matplotlib.pyplot as plt
-from analysis.helper.transforms import get_affine_transform
-from utils.transforms import flip_anchors
 import os
 
-plt.rcParams["savefig.bbox"] = "tight"
+from analysis.helper.transforms import get_affine_transform
+from utils.transforms import flip_anchors
+import configs.variables as variables
 
 ########################
 # CONSTANTS
 
 NUM_JOINTS = 15
-
 SCALE_FACTOR = 170
+TEMPLATES_DIR = variables.TEMPLATES_DIR
+
 ########################
 
 """
@@ -122,8 +122,8 @@ Adjust train configurations to match test configurations
 """
 def adjust_configs(config):
     config['batch_size'] = 1
-    config['template_path'] = "../../../" + config['template_path']
-    config['anchor_pts_path'] = "../../../" + config['anchor_pts_path']
+    config['template_path'] = TEMPLATES_DIR + config['template_path']
+    config['anchor_pts_path'] = TEMPLATES_DIR + config['anchor_pts_path']
     
 """
 Return file name of most recent checkpoint

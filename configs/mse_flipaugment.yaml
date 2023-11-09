@@ -10,8 +10,7 @@ anchor_loss_weight: 0.5
 boundary_loss_weight: 1
 num_epochs: 50
 num_workers: 8
-template_path: '../../templates/template.json'
-anchor_pts_path: '../../templates/anchor_points.json'
-frames_path: '../../data/preprocessed/training'
-log_dir: '../../vol/logs_mse_flipaugment/'
-checkpoint_dir: '../../vol/checkpoints_mse_flipaugment/'
+template_path: 'template.json'
+anchor_pts_path: 'anchor_points.json'
+log_dir: 'logs_mse_flipaugment/'
+checkpoint_dir: 'checkpoints_mse_flipaugment/'

@@ -1,10 +1,12 @@
+import sys
+sys.path.append("..")
+sys.path.append("../..")
+
 import torch
 import kornia
-import argparse
-import torchvision.transforms as T
-from old_networks import ParameterRegressor
-from src.core.utils.helper import draw_template, load_anchor_points
-from src.core.utils.transforms import transform_template, transform_anchor_points
+from baseline_pretrained_networks import ParameterRegressor
+from utils.helper import draw_template, load_anchor_points
+from utils.transforms import transform_template, transform_anchor_points
 
 class Predictor:
     def __init__(self, batch_size, num_parts, device, template_path, anchors_path):

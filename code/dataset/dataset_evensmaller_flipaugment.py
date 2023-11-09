@@ -3,6 +3,9 @@ import numpy as np
 import torch
 from torch.utils.data import Dataset
 from torchvision.io import read_image
+import configs.variables as variables
+
+DATA_DIR = variables.DATA_DIR
 
 class ImageDataset(Dataset):
     """Implement your map-style dataset class here!"""
@@ -15,7 +18,7 @@ class ImageDataset(Dataset):
         self.len = 0
         
         for subject in subjects:
-            subject_prefix = "../../data/preprocessed/training/" + subject + "/"
+            subject_prefix = DATA_DIR + "preprocessed/training/" + subject + "/"
             folders = os.listdir(subject_prefix)
             for folder in folders:
                 if not folder.startswith("."):
@@ -39,7 +42,6 @@ class ImageDataset(Dataset):
                 
         print("Length of Dataset: ", self.len * 2)
 
-        self.prefix = "../../"
         print("Finished initializing dataset.")
 
                 
@@ -50,8 +52,8 @@ class ImageDataset(Dataset):
 
         idx_new = idx % (self.len)
 
-        frame1 = read_image(self.prefix + self.frame_paths[2 * idx_new])[[2,1,0],:,:]
-        frame2 = read_image(self.prefix + self.frame_paths[2 * idx_new + 1])[[2,1,0],:,:]
+        frame1 = read_image(self.frame_paths[2 * idx_new])[[2,1,0],:,:]
+        frame2 = read_image(self.frame_paths[2 * idx_new + 1])[[2,1,0],:,:]
 
         if idx >= self.len:
             frame1 = torch.flip(frame1, (2,))

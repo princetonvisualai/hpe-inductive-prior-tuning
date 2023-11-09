@@ -2,7 +2,7 @@ import torch.nn as nn
 import torch
 
 class ParameterRegressor(nn.Module):
-    def __init__(self, num_features, num_parts, use_orient = False):
+    def __init__(self, num_features, num_parts):
         super(ParameterRegressor, self).__init__()
         """
         convolutional encoder + linear layer at the end
@@ -14,7 +14,7 @@ class ParameterRegressor(nn.Module):
         """
         self.num_features = num_features
         self.num_parts = num_parts
-        self.layers = self.define_network(num_features, use_orient = use_orient)
+        self.layers = self.define_network(num_features)
 
     def _add_conv_layer(self, in_ch, nf):
         return nn.Sequential(
@@ -30,42 +30,27 @@ class ParameterRegressor(nn.Module):
             nn.LeakyReLU(inplace=True)
         )
 
-    def define_network(self, num_features, use_orient):
+    def define_network(self, num_features):
         layers = [self._add_conv_layer(in_ch=3, nf=num_features[0])]
         for i in range(1, len(num_features)):
             layers.append(self._add_conv_layer(num_features[i-1], num_features[i-1]))
             layers.append(self._add_down_layer(num_features[i-1], num_features[i]))
         
-        if not use_orient:
-            layers.append(nn.Sequential(
-                nn.Conv2d(num_features[-1], 256, 1, 1, 1),
-                nn.BatchNorm2d(256),
-                nn.LeakyReLU(inplace=True),
-                nn.Flatten(),
-                nn.LazyLinear(512),
-                nn.BatchNorm1d(512),
-                nn.LeakyReLU(inplace=True),
-                nn.LazyLinear(self.num_parts*6)
-            ))
-        else:
-            layers.append(nn.Sequential(
-                nn.Conv2d(num_features[-1], 256, 1, 1, 1),
-                nn.BatchNorm2d(256),
-                nn.LeakyReLU(inplace=True),
-                nn.Flatten(),
-                nn.LazyLinear(512),
-                nn.BatchNorm1d(512),
-                nn.LeakyReLU(inplace=True),
-                nn.LazyLinear(self.num_parts*6 + 1)
-            ))
+        layers.append(nn.Sequential(
+            nn.Conv2d(num_features[-1], 256, 1, 1, 1),
+            nn.BatchNorm2d(256),
+            nn.LeakyReLU(inplace=True),
+            nn.Flatten(),
+            nn.LazyLinear(512),
+            nn.BatchNorm1d(512),
+            nn.LeakyReLU(inplace=True),
+            nn.LazyLinear(self.num_parts*6)
+        ))
 
         return nn.Sequential(*layers)
 
-    def forward(self, input, use_orient=False):
-        if not use_orient:
-            return self.layers(input).view(-1, self.num_parts, 2, 3)
-        else:
-            return self.layers(input)
+    def forward(self, input):
+        return self.layers(input).view(-1, self.num_parts, 2, 3)
 
 
 class Reconstructor(nn.Module):

@@ -1,5 +1,9 @@
+import sys
+sys.path.append("..")
+sys.path.append("../..")
+
 ################################################ Imports
-OUTPUT_FILE = "analysis_constrained_model.txt"
+OUTPUT_FILE = "analysis_constrained.txt"
 
 def write_output(msg, mode = "a"):
     with open("progress/" + OUTPUT_FILE, "a") as f:
@@ -7,38 +11,29 @@ def write_output(msg, mode = "a"):
     
 write_output("", "w") # clear output file
 
-write_output("Beginning updating sys path")
-
-import sys
-sys.path.append("..")
-sys.path.append("../..")
-sys.path.append("../../..")
-sys.path.append("helper")
-
-write_output("Finished updating sys path")
-
 import torch
-import matplotlib.pyplot as plt
 import torchvision.transforms as T
 import json_tricks as json
 
 from utils.helper import load_config
 from dataset_test import TestImageDataset
+import configs.variables as variables
 
 from helper.predict import (adjust_configs, most_recent_checkpoint, load_checkpoint, get_pose, predict_joints)
 
 from helper.deepdive import (dist)
 
-plt.rcParams["savefig.bbox"] = "tight"
 device = torch.device('cuda:0')
 
 ################################################ Constants
 NUM_JOINTS = 15
 
-PREFIX = "/scratch/network/nobliney/project/"
-PREFIX_VOL = PREFIX + "vol/"
-PREPROCESSED_TO_ORIG = PREFIX + "code/preprocessing/preprocessed_to_orig.json" # contains the file path of original frame as well
-CHECKPOINTS_PREFIX = PREFIX_VOL + "checkpoints_"
+VOL_DIR = variables.VOL_DIR
+CONFIGS_DIR = variables.CONFIGS_DIR
+CODE_DIR = variables.CODE_DIR
+
+PREPROCESSED_TO_ORIG = variables.PREPROCESSED_TO_ORIG # contains the file path of original frame as well
+CHECKPOINTS_PREFIX = VOL_DIR + "checkpoints_"
 TEST_SUBJECTS = ['S9', 'S11']
 NORMALIZE = T.Normalize(mean=[0.485, 0.456, 0.406],
                         std=[0.229, 0.224, 0.225])
@@ -68,7 +63,7 @@ CHECKPOINTS_FOLDER1 = CHECKPOINTS_PREFIX + POSTFIX1 + "/"
 ################################################
 
 # Get configurations of both models
-config1 = load_config("../../../configs/" + CONFIG1_YAML)
+config1 = load_config(CONFIGS_DIR + CONFIG1_YAML)
 # train --> test configurations
 adjust_configs(config1)
 
@@ -128,7 +123,7 @@ for i in range(DATASET_LENGTH):
     ######## COLLECT DIAGONAL, ERROR FROM GROUND TRUTH
     dist1_collection[i] = dist(pose1, anchors1)
 
-DISTS_DIR = "dists/"
+DISTS_DIR = variables.DISTS_DIR
 
 #torch.save(pose_collection, "pose_collection.pt") # NEED TO DO JUST ONCE
 #torch.save(diagonal_collection, "diagonal_collection.pt") # NEED TO DO JUST ONCE

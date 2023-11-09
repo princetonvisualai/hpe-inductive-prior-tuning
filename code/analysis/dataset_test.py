@@ -1,10 +1,16 @@
+import sys
+sys.path.append("..")
+sys.path.append("../..")
+
 import os
 from torchvision.io import read_image
 import numpy as np
 import random
+import configs.variables as variables
 
 SEED = 7
 random.seed(SEED)
+DATA_DIR = variables.DATA_DIR
 
 class TestImageDataset:
     """Implement your map-style dataset class here!"""
@@ -16,7 +22,7 @@ class TestImageDataset:
         self.mapping = mapping
         
         for subject in subjects:
-            subject_prefix = "/scratch/network/nobliney/project/data/preprocessed/training/" + subject + "/"
+            subject_prefix = DATA_DIR + "preprocessed/training/" + subject + "/"
             folders = os.listdir(subject_prefix)
             for folder in folders:
                 if not folder.startswith("."):

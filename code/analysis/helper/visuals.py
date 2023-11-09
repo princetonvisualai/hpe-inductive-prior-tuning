@@ -1,10 +1,11 @@
 import matplotlib.pyplot as plt
-import torchvision.transforms as T
 from matplotlib.patches import Rectangle
 from matplotlib import gridspec
 
 import numpy as np
+
 import torch
+import torchvision.transforms as T
 
 plt.rcParams["savefig.bbox"] = "tight"
 

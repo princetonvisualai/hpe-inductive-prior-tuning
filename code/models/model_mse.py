@@ -1,25 +1,26 @@
 import sys
-sys.path.insert(0,"../..")
+sys.path.append("..")
+sys.path.append("../..")
 
 import torch
 import torch.nn as nn
 from torch.optim import Adam
 import torchvision.models as models
 from networks_baseline import ParameterRegressor, Reconstructor
-from code.utils.losses import compute_anchor_loss, compute_boundary_loss, _l1_loss, _l2_loss
-from code.utils.helper import draw_template, load_anchor_points
-from code.utils.transforms import transform_template, transform_anchor_points
+from utils.losses import compute_anchor_loss, compute_boundary_loss, _l1_loss, _l2_loss
+from utils.helper import draw_template, load_anchor_points
+from utils.transforms import transform_template, transform_anchor_points
+import configs.variables as variables
+
+TEMPLATES_DIR = variables.TEMPLATES_DIR
+PRETRAINED_VGG_PATH = variables.PRETRAINED_VGG_PATH
 
 class Model:
     def __init__(self, cfg, device):
-        """
-        TO DO: fill in path to pretrained VGG
-        """
-        self.PATH_TO_PRETRAINED_VGG = "" # TO DO
 
-        self.template = draw_template(cfg['template_path'], size=cfg['img_size'], batch_size=cfg['batch_size'],
+        self.template = draw_template(TEMPLATES_DIR + cfg['template_path'], size=cfg['img_size'], batch_size=cfg['batch_size'],
                                       device=device)
-        self.core, self.single, self.double = load_anchor_points(cfg['anchor_pts_path'], device, cfg['batch_size'])
+        self.core, self.single, self.double = load_anchor_points(TEMPLATES_DIR + cfg['anchor_pts_path'], device, cfg['batch_size'])
         self.regressor = ParameterRegressor(num_features=cfg['regressor_nf'], num_parts=cfg['num_parts']).to(device)
         self.translator = Reconstructor(num_features=cfg['translator_nf'], num_parts=cfg['num_parts']).to(device)
         
@@ -29,7 +30,7 @@ class Model:
         self.vgg = nn.Sequential()
         # since compute node has no internet, use pre-downloaded vgg model
         vgg = models.vgg19(pretrained=False)
-        vgg.load_state_dict(torch.load(self.PATH_TO_PRETRAINED_VGG))
+        vgg.load_state_dict(torch.load(PRETRAINED_VGG_PATH))
         vgg = vgg.features.eval().to(device)
         #vgg = models.vgg19(pretrained=True).features.eval().to(device)
         depth = 14

@@ -1,21 +1,21 @@
 """
 Step 2: Create data_dict.json
 """
+import sys
+sys.path.append("..")
+sys.path.append("../..")
+
+import configs.variables as variables
+
+DATA_DIR = variables.DATA_DIR
 
 import os
 import numpy as np
 import h5py
 import json
 
-compute_data_folder = "../../data/"
-
-# get list of all subjects
-def get_subjects():
-    video_folders = os.listdir(compute_data_folder)[3:]
-    return video_folders
-
 def get_video_paths(subject):
-    video_paths = os.listdir(compute_data_folder + subject + "/videos/")[2:]
+    video_paths = os.listdir(DATA_DIR + subject + "/videos/")[2:] # TO DO: adjust indexing ([2:]) to filter out any miscellaneous files, like hidden files
     return video_paths
 
 # process bounding boxes of one video
@@ -30,7 +30,7 @@ def get_masked_frame(bbox_path, mask):
     with h5py.File(bbox_path, 'r') as f:
         return np.array(f[mask])
 
-subjects = get_subjects()
+subjects = ["S1", "S11", "S5", "S6", "S7", "S8", "S9"]
 
 data_dict = {}
 
@@ -42,8 +42,8 @@ for subject in subjects:
     video_paths = get_video_paths(subject)
     bbox_paths = [(i[:-4] + ".mat") for i in video_paths]
 
-    bbox_prefix = compute_data_folder + subject + "/bboxes/"
-    frame_prefix = compute_data_folder + "h36m/training/" + subject + "/frames/"
+    bbox_prefix = DATA_DIR + subject + "/bboxes/"
+    frame_prefix = DATA_DIR + "h36m/training/" + subject + "/frames/"
     
     f = open("create_data_dict_log.txt", "a")
     f.write("Processing subject " + subject + "\n")

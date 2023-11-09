@@ -1,5 +1,6 @@
 import sys
-sys.path.insert(0,"../..")
+sys.path.append("..")
+sys.path.append("../..")
 
 import os
 import torch
@@ -7,9 +8,13 @@ from argparse import ArgumentParser
 import torchvision.transforms as transforms
 from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader
-from code.utils.helper import load_config, show_images
-from code.models.model_baseline import Model
-from code.dataset.dataset_smaller import ImageDataset
+from utils.helper import load_config, show_images
+from models.model_baseline import Model
+from dataset.dataset_smaller import ImageDataset
+
+import configs.variables as variables
+
+VOL_DIR = variables.VOL_DIR
 
 parser = ArgumentParser()
 
@@ -47,11 +52,11 @@ dataloader = DataLoader(dataset=dataset, batch_size=cfg['batch_size'], shuffle=T
                         drop_last=True)
 
 num_epochs = cfg['num_epochs']
-log_dir = cfg['log_dir']
+log_dir = VOL_DIR + cfg['log_dir']
 writer = SummaryWriter(log_dir=log_dir)
 if not os.path.exists(log_dir):
     os.makedirs(log_dir)
-check_dir = cfg['checkpoint_dir']
+check_dir = VOL_DIR + cfg['checkpoint_dir']
 if not os.path.exists(check_dir):
     os.makedirs(check_dir)
 

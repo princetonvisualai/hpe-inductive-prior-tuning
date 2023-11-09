@@ -1,26 +1,27 @@
 import sys
-sys.path.insert(0,"../..")
+sys.path.append("..")
+sys.path.append("../..")
 
 import torch
 import torch.nn as nn
 from torch.optim import Adam
 import torchvision.models as models
 from networks_baseline import ParameterRegressor, Reconstructor
-from code.utils.losses import compute_anchor_loss, compute_boundary_loss, _l1_loss, _l2_loss
-from code.utils.helper import draw_template, load_anchor_points
-from code.utils.transforms import transform_template, transform_anchor_points
+from utils.losses import compute_anchor_loss, compute_boundary_loss, _l1_loss, _l2_loss
+from utils.helper import draw_template, load_anchor_points
+from utils.transforms import transform_template, transform_anchor_points
+import configs.variables as variables
+
+TEMPLATES_DIR = variables.TEMPLATES_DIR
+PRETRAINED_VGG_PATH = variables.PRETRAINED_VGG_PATH
 
 class Model:
     def __init__(self, cfg, device):
-        """
-        TO DO: fill in path to pretrained VGG
-        """
-        self.PATH_TO_PRETRAINED_VGG = "" # TO DO
 
         self.device = device
-        self.template = draw_template(cfg['template_path'], size=cfg['img_size'], batch_size=cfg['batch_size'],
+        self.template = draw_template(TEMPLATES_DIR + cfg['template_path'], size=cfg['img_size'], batch_size=cfg['batch_size'],
                                       device=device)
-        self.core, self.single, self.double = load_anchor_points(cfg['anchor_pts_path'], device, cfg['batch_size'])
+        self.core, self.single, self.double = load_anchor_points(TEMPLATES_DIR + cfg['anchor_pts_path'], device, cfg['batch_size'])
         self.regressor = ParameterRegressor(num_features=cfg['regressor_nf'], num_parts=20).to(device)
         self.translator = Reconstructor(num_features=cfg['translator_nf'], num_parts=cfg['num_parts']).to(device)
         
@@ -30,7 +31,7 @@ class Model:
         self.vgg = nn.Sequential()
         # since compute node has no internet, use pre-downloaded vgg model
         vgg = models.vgg19(pretrained=False)
-        vgg.load_state_dict(torch.load(self.PATH_TO_PRETRAINED_VGG))
+        vgg.load_state_dict(torch.load(PRETRAINED_VGG_PATH))
         vgg = vgg.features.eval().to(device)
         #vgg = models.vgg19(pretrained=True).features.eval().to(device)
         
@@ -56,21 +57,6 @@ class Model:
         # Split estimated params into two step warp
         estimated_params_1 = torch.zeros(batch_size, num_parts, 2, 3).to(self.device)
         estimated_params_2 = torch.zeros(batch_size, num_parts, 2, 3).to(self.device)
-
-        """estimated_params_1[:, 0:7] = estimated_params[:, 0:7] # core, hips, thighs, shins (7)
-        estimated_params_1[:, [7,9,11,15]] = estimated_params[:, 7].unsqueeze(1) # left shoulder, arm, forearm, hand (4)
-        estimated_params_1[:, [8,10,12,16]] = estimated_params[:, 8].unsqueeze(1) # right shoulder, arm, forearm, hand (4)
-        estimated_params_1[:, 13:15] = estimated_params[:, 9:11] # feet 2
-        estimated_params_1[:, 17] = estimated_params[:, 11] # head 1
-
-        estimated_params_2[:, 7] = estimated_params[:, 12] # left shoulder
-        estimated_params_2[:, 9] = estimated_params[:, 13] # left arm
-        estimated_params_2[:, 11] = estimated_params[:, 14] # left forearm
-        estimated_params_2[:, 15] = estimated_params[:, 15] # left hand
-        estimated_params_2[:, 8] = estimated_params[:, 16] # right shoulder
-        estimated_params_2[:, 10] = estimated_params[:, 17] # right arm
-        estimated_params_2[:, 12] = estimated_params[:, 18] # right forearm
-        estimated_params_2[:, 16] = estimated_params[:, 19] # right hand"""
 
         estimated_params_1[:, 0:9] = estimated_params[:, 0:9] # core, hips, thighs, shins, shoulders (9)
         estimated_params_1[:, [9,11,15]] = estimated_params[:, 9].unsqueeze(1) # left arm, forearm, hand (3)

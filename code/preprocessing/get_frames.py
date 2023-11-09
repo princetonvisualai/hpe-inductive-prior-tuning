@@ -1,29 +1,29 @@
 """
 Step 1: Extract frames from video
 """
+import sys
+sys.path.append("..")
+sys.path.append("../..")
+
+import configs.variables as variables
 
 import os
 import cv2
 
-compute_data_folder = "../../data/"
-
-# get list of all subjects
-def get_subjects():
-    video_folders = os.listdir(compute_data_folder)[5:]
-    return video_folders
+DATA_DIR = variables.DATA_DIR
 
 def get_video_paths(subject):
-    video_paths = os.listdir(compute_data_folder + subject + "/videos/")[2:]
+    video_paths = os.listdir(DATA_DIR + subject + "/videos/")[2:]  # TO DO: adjust indexing ([2:]) to filter out any miscellaneous files, like hidden files
     return video_paths
 
-subjects = get_subjects()
+subjects = ["S1", "S11", "S5", "S6", "S7", "S8", "S9"]
 
 # for each subject
 for subject in subjects:
     video_paths = get_video_paths(subject)
-    path_prefix = compute_data_folder + subject
+    path_prefix = DATA_DIR + subject
     
-    save_prefix = compute_data_folder + "h36m/training/" + subject + "/frames/"
+    save_prefix = DATA_DIR + "h36m/training/" + subject + "/frames/"
     
     f = open("getframeslog.txt", "a")
     f.write("Processing subject " + subject + "\n")
@@ -32,9 +32,6 @@ for subject in subjects:
     #print("Processing subject ", subject)
     
     # for each video (i.e. activity), get list of frames
-
-    #if subject == "S1":
-    #    video_paths = video_paths[70:]
     
     for j in range(len(video_paths)):
         #if j % 3 == 0:

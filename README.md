@@ -5,7 +5,9 @@
 
 ## Set up
 
-Run the following commands.
+1. In `configs/variables.py`, fill out `TO DO` elements.
+
+2. Run the following commands.
 
 ```
 conda create -n poseestimation python=3.7

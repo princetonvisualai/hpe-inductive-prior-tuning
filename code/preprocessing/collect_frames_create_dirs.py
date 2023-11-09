@@ -2,12 +2,19 @@
 Step 3: Create directories for collecting frames
 """
 
-dst = "../../data/preprocessed/training"
+import sys
+sys.path.append("..")
+sys.path.append("../..")
+
+import configs.variables as variables
+
+DATA_DIR = variables.DATA_DIR
+dst = DATA_DIR + "preprocessed/training"
 subjects = ["S1", "S11", "S5", "S6", "S7", "S8", "S9"]
 meta = "data_dict.json"
 
-import json_tricks as json
 import os
+import json_tricks as json
 import numpy as np
 
 ####################

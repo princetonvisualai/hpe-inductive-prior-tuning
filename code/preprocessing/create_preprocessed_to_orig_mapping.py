@@ -7,18 +7,21 @@ import sys
 sys.path.append("..")
 sys.path.append("../..")
 
-import matplotlib.pyplot as plt
+import configs.variables as variables
+
 import json_tricks as json
 import cdflib
 
-plt.rcParams["savefig.bbox"] = "tight"
 
 ########################
 # CONSTANTS
 
-PREFIX = "../../"
-PREPROCESSED_TO_ORIG = "preprocessed_to_orig.json" # contains the file path of original frame as well
+CODE_DIR = variables.CODE_DIR
+DATA_DIR = variables.DATA_DIR
+PREPROCESSED_TO_ORIG = variables.PREPROCESSED_TO_ORIG
 ########################
+
+prefix_length = len(DATA_DIR + "preprocessed/")
 
 """
 Create preprocessed to original frame, bbox, pose mapping
@@ -26,15 +29,15 @@ Create preprocessed to original frame, bbox, pose mapping
 def create_mapping():
 
     # get original bounding box and pose information
-    with open(PREFIX + "code/preprocessing/data_dict.json", "r") as f:
+    with open(CODE_DIR + "preprocessing/data_dict.json", "r") as f:
         data_dict = json.load(f)
 
     # get original bounding box and pose information
-    with open(PREFIX + "code/preprocessing/mapping_preprocessed.json", "r") as f:
+    with open(CODE_DIR + "preprocessing/mapping_preprocessed.json", "r") as f:
         mapping = json.load(f)
 
     for i in mapping:
-        mapping[i] = PREFIX + "data/preprocessed/" + mapping[i][25:]
+        mapping[i] = DATA_DIR + "preprocessed/" + mapping[i][prefix_length:]
     
     preprocessed_to_orig = {}
 
@@ -47,7 +50,7 @@ def create_mapping():
 
             # if this video was preprocessed
             if frames[0]['frame'] in mapping:
-                poses = cdflib.CDF(PREFIX + "data/poses/" + s + "/" + video + ".cdf")
+                poses = cdflib.CDF(DATA_DIR + "poses/" + s + "/" + video + ".cdf")
                 poses = poses['Pose'].squeeze()
 
                 for i in range(len(frames)):  
