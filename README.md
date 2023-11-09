@@ -58,15 +58,15 @@ First, change directory to `code/train`: `cd code/train`
 
 Baseline: `python train_baseline.py -config ../../configs/baseline.yaml`
 
-+ MSE: `python train_mse.py -config ../../configs/mse.yaml`
+\+ MSE: `python train_mse.py -config ../../configs/mse.yaml`
 
 New template: `python train_baseline.py -config ../../configs/natural.yaml`
 
-+ MSE, new template: `python train_mse.py -config ../../configs/mse_natural.yaml`
+\+ MSE, new template: `python train_mse.py -config ../../configs/mse_natural.yaml`
 
-+ MSE, new template, flip augment: `python train_mse_flipaugment.py -config ../../configs/mse_natural_flipaugment.yaml`
+\+ MSE, new template, flip augment: `python train_mse_flipaugment.py -config ../../configs/mse_natural_flipaugment.yaml`
 
-+ MSE, new template, flip augment, coarse-to-fine: `python train_mse_flipaugment_twostepwarp.py -config ../../configs/mse_natural_flipaugment_twostepwarp.yaml`
+\+ MSE, new template, flip augment, coarse-to-fine: `python train_mse_flipaugment_twostepwarp.py -config ../../configs/mse_natural_flipaugment_twostepwarp.yaml`
 
 Constrained: `python train_constrained.py -config ../../configs/constrained.yaml`
 
